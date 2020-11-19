@@ -40,7 +40,7 @@ client.on('message', (message) => {
 
 	if (typeof pokembed != 'undefined') {
 		var pokemon = JSON.stringify(pokembed);	
-		if (pokemon.includes('"footer":{"text":"Common (')) {
+		if (pokemon.includes('"footer":{"text":"Legendary (')) {
 			message.pin({ reason: 'Legendary found!' });
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			for (let i = 0; i < channels.length; i++) {
