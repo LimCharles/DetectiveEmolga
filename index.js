@@ -23,7 +23,7 @@ client.on('message', (message) => {
 
 	if (message.author.id == '778585732318756874') {return;} // return if message was sent by itself
 
- 	if (channels.length == 0) {message.channel.send("You haven't set a rare-drops channel!"); return; } // return if channels has no channel 
+ 	if (channels.length == 0) {message.channel.send("You haven't set a rare-drops channel! Please use !channel in your rare drops channel!"); return; } // return if channels has no channel 
 
 	var check = false;
 	for (let i = 0; i < channels.length; i++) {
@@ -31,7 +31,7 @@ client.on('message', (message) => {
 			check = true;
 		} // check becomes true when it finds one match
 		if ((check == false) && i == (channels.length-1)) {
-			message.channel.send("You haven't set a rare-drops channel!");
+			message.channel.send("You haven't set a rare-drops channel! Please use !channel in your rare drops channel!");
 			return;
 		} // return if rare-drops channel is not declared in that server
 	}
@@ -43,6 +43,7 @@ client.on('message', (message) => {
 		if (pokemon.includes('"footer":{"text":"Legendary (')) {
 			message.pin({ reason: 'Legendary found!' });
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+			pokembed.addField('​​\u200b','This Pokémon was found in: ' + `[${message.channel.name}](${message.url})`);
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][1]) {
 					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][0]);
@@ -54,6 +55,7 @@ client.on('message', (message) => {
 		if (pokemon.includes('"footer":{"text":"Shiny (')) {
 			message.pin({ reason: 'Shiny found!' });
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+			pokembed.addField('​​\u200b','This Pokémon was found in: ' + `[${message.channel.name}](${message.url})`);
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][1]) {
 					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][0]);
