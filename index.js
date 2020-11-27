@@ -15,9 +15,54 @@ client.on('message', (message) => {
 				return; // exit and reply with message that rare-drop channel changed
 			} 
 		} //checks if server already has a rare-drops channel, then declares the new rare-drops channel
-		channels.push([giveawaychannel.name,giveawayserver.name]);
+		channels.push([giveawaychannel.name,giveawayserver.name]); //declares new channel for that server
 		giveawaychannel.send('This is now the rare-drops channel!');
+		return; // exit and reply with message that rare-drop channel is declared
 	} // working as intended! A/O 18/11/2020
+
+	if (message.content.startsWith('!mention')) {
+		const args = message.content.trim().split(' ');
+		for (let i = 0; i < channels.length; i++) {
+			if (message.guild.name == channels[i][1]) {
+				switch(args[1]) {
+					case 'al':
+						channels[i][2] = args[2];
+						message.channel.send(channels[i][2] + ' will now be pinged for legendaries.');
+						return;
+					case 'as':
+						channels[i][3] = args[2];
+						message.channel.send(channels[i][3] + ' will now be pinged for shinies.');
+						return;
+					case 'rl':
+						message.channel.send(channels[i][2] + ' will no longer be pinged for legendaries.');
+						delete channels[i][2]
+						return;
+					case 'rs':
+						message.channel.send(channels[i][3] + ' will no longer be pinged for shinies.');
+						delete channels[i][3]
+						return;
+					case 'check':
+						if (channels[i][2] != null) {
+							message.channel.send(channels[i][2] + ' is the role for legendaries.');
+						} else {
+							message.channel.send('There is no role for legendary drops.')
+						}
+						if (channels[i][3] != null) {
+							message.channel.send(channels[i][3] + ' is the role for shinies.');
+						} else {
+							message.channel.send('There is no role for shiny drops.')
+						}
+						console.table(channels);
+						return;
+					default:
+						message.channel.send('Invalid format, please try again!');
+						return;
+				}
+			} 
+		}
+		message.channel.send("You haven't set a rare-drops channel!");
+		return;
+	}
 
 	if (!(message.author.bot)) {return;} // return if message was not sent by a bot
 
@@ -40,17 +85,24 @@ client.on('message', (message) => {
 
 	if (typeof pokembed != 'undefined') {
 		var pokemon = JSON.stringify(pokembed);	
-		if (pokemon.includes('"footer":{"text":"Legendary (')) {
+		if (pokemon.includes('"footer":{"text":"Common (')) {
 			message.pin({ reason: 'Legendary found!' });
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			pokembed.addField('​​\u200b','This Pokémon was found in: ' + `[${message.channel.name}](${message.url})`);
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][1]) {
 					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][0]);
-				} // find corresponding channel name from server name in channels
+					if (channels[i][2] == undefined) {
+						mainchannel.send(pokembed);
+						mainchannel.send('A legendary was found in ' + message.channel.name + '!');
+						break;
+					} else {
+						mainchannel.send(pokembed);
+						mainchannel.send(channels[i][2] + ' A legendary was found in ' + message.channel.name + '!');
+						break;
+					}
+				} 
 			}
-			mainchannel.send(pokembed);
-			mainchannel.send('A legendary was found in ' + message.channel.name + '!');
 		}
 		if (pokemon.includes('"footer":{"text":"Shiny (')) {
 			message.pin({ reason: 'Shiny found!' });
@@ -59,10 +111,15 @@ client.on('message', (message) => {
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][1]) {
 					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][0]);
-				} // find corresponding channel name from server name in channels
+					if (channels[i][3] == undefined) {
+						mainchannel.send(pokembed);
+						mainchannel.send('A shiny was found in ' + message.channel.name + '!');
+					} else {
+						mainchannel.send(pokembed);
+						mainchannel.send(channels[i][3] + ' A shiny was found in ' + message.channel.name + '!');
+					}
+				} 
 			}
-			mainchannel.send(pokembed);
-			mainchannel.send('A shiny was found in ' + message.channel.name + '!');
 		}
 	} 
 });
