@@ -85,7 +85,7 @@ client.on('message', (message) => {
 
 	if (typeof pokembed != 'undefined') {
 		var pokemon = JSON.stringify(pokembed);	
-		if (pokemon.includes('"footer":{"text":"Common (')) {
+		if (pokemon.includes('"footer":{"text":"Legendary (')) {
 			message.pin({ reason: 'Legendary found!' });
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			pokembed.addField('​​\u200b','This Pokémon was found in: ' + `[${message.channel.name}](${message.url})`);
