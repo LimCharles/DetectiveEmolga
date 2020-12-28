@@ -122,6 +122,11 @@ client.on('message', (message) => {
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][0]) {
 					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
+					if (mainchannel == undefined) {
+						console.log(channels[i][0]);
+						console.log(channels[i][1]);
+						return;
+					}
 					if (channels[i][2] == undefined) {
 						mainchannel.send(pokembed);
 						mainchannel.send('A legendary was found in ' + message.channel.name + '!');
@@ -141,6 +146,11 @@ client.on('message', (message) => {
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][0]) {
 					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
+					if (mainchannel == undefined) {
+						console.log(channels[i][0]);
+						console.log(channels[i][1]);
+						return;
+					}
 					if (channels[i][3] == undefined) {
 						mainchannel.send(pokembed);
 						mainchannel.send('A shiny was found in ' + message.channel.name + '!');
