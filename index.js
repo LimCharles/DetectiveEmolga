@@ -474,6 +474,56 @@ client.on('message', (message) => {
 				} 
 			}
 		} //embed includes shiny emote and catchbot returned with
+
+		if ((pokemon.includes('Type ;vote to get more boxes!')) && (pokemon.includes('ani-shiny')))  {
+			message.pin({ reason: 'Shiny Unboxed!' });
+			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+			pokembed.addField('​​\u200b','This Pokémon was unboxed in: ' + `[${message.channel.name}](${message.url})`);
+			for (let i = 0; i < channels.length; i++) {
+				if (message.guild.name == channels[i][0]) {
+					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
+					if (mainchannel == undefined) {
+						console.log(channels[i][0]);
+						console.log(channels[i][1]);
+						return;
+					}
+					if (channels[i][3] == undefined) {
+						mainchannel.send(pokembed);
+						mainchannel.send('A shiny was unboxed in ' + message.channel.name + '!');
+						return;
+					} else {
+						mainchannel.send(pokembed);
+						mainchannel.send(channels[i][3] + ' A shiny was unboxed in ' + message.channel.name + '!');
+						return;
+					}
+				} 
+			}
+		} //embed includes vote message and ani-shiny
+
+		if ((pokemon.includes('Type ;vote to get more boxes!')) && (legends.some(e => pokemon.includes(e)))) {
+			message.pin({ reason: 'Legendary Unboxed!' });
+			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+			pokembed.addField('​​\u200b','This Pokémon was unboxed in: ' + `[${message.channel.name}](${message.url})`);
+			for (let i = 0; i < channels.length; i++) {
+				if (message.guild.name == channels[i][0]) {
+					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
+					if (mainchannel == undefined) {
+						console.log(channels[i][0]);
+						console.log(channels[i][1]);
+						return;
+					}
+					if (channels[i][2] == undefined) {
+						mainchannel.send(pokembed);
+						mainchannel.send('A legendary was unboxed in ' + message.channel.name + '!');
+						return;
+					} else {
+						mainchannel.send(pokembed);
+						mainchannel.send(channels[i][2] + ' A legendary was unboxed in ' + message.channel.name + '!');
+						return;
+					}
+				} 
+			}
+		} //embed includes vote message and embed has a legendary name
 	} 
 });
 
