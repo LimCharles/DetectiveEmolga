@@ -280,7 +280,6 @@ client.on('message', (message) => {
 		} //normal shiny spawn
 
 		if ((pokemon.includes('hatched an Egg!')) && (pokemon.includes('ani-shiny'))) {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			pokembed.addField('​​\u200b','This Pokémon was hatched in: ' + `[${message.channel.name}](${message.url})`);
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][0]) {
