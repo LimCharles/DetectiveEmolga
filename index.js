@@ -133,7 +133,7 @@ const legends = [
 	'meltan',
 	'melmetal',
 	'zarude'
-]
+];
 
 mongo.connect( async () => {
     collection = mongo.db("ServerData").collection("SavedChannels");
@@ -479,6 +479,7 @@ client.on('message', (message) => {
 
 client.on('messageUpdate', (oldMessage, newMessage) => {
 	if (oldMessage.author.id != '664508672713424926') {return;}
+	if (oldMessage.embeds[0] == undefined) {return;}
     if ((oldMessage.embeds[0].author.name == newMessage.embeds[0].author.name) || (!(newMessage.embeds[0].author.name.includes('wild')))) {
 		return;
 	}
