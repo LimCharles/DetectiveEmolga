@@ -281,7 +281,7 @@ client.on('message', (message) => {
 			}
 		} //normal shiny spawn
 
-		if ((pokemon.includes('hatched an Egg!","icon"')) && (pokemon.includes('shiny'))) {
+		if ((pokemon.includes('hatched an Egg!","icon"')) && (pokemon.includes('ani-shiny'))) {
 			message.pin({ reason: 'Shiny hatched!' });
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			pokembed.addField('​​\u200b','This Pokémon was hatched in: ' + `[${message.channel.name}](${message.url})`);
@@ -304,7 +304,7 @@ client.on('message', (message) => {
 					}
 				} 
 			}
-		} //embed includes hatched an egg and the embed includes shiny
+		} //embed includes hatched an egg and the embed includes ani-shiny
 
 		if ((pokemon.includes('hatched an Egg!","icon"')) && (eggexcl.some(e => pokemon.includes(e)))) {
 			message.pin({ reason: 'Exclusive hatched!' });
@@ -350,7 +350,7 @@ client.on('message', (message) => {
 			}
 		} //embed includes hatched an egg and embed includes a legendary name
 
-		if ((pokemon.includes('from a swap!","url":null')) && (pokemon.includes('shiny'))) {
+		if ((pokemon.includes('from a swap!","url":null')) && (pokemon.includes('ani-shiny'))) {
 			message.pin({ reason: 'Shiny swapped!' });
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			pokembed.addField('​​\u200b','This Pokémon was swapped in: ' + `[${message.channel.name}](${message.url})`);
@@ -373,9 +373,9 @@ client.on('message', (message) => {
 					}
 				} 
 			}
-		} //embed includes from a swap and embed includes shiny
+		} //embed includes from a swap and embed includes ani-shiny
 
-		if ((pokemon.includes('from a swap!","url":null')) && (pokemon.includes('golden'))) {
+		if ((pokemon.includes('from a swap!","url":null')) && (pokemon.includes('/golden'))) {
 			message.pin({ reason: 'Golden swapped!' });
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			pokembed.addField('​​\u200b','This Pokémon was swapped in: ' + `[${message.channel.name}](${message.url})`);
@@ -398,7 +398,7 @@ client.on('message', (message) => {
 					}
 				} 
 			}
-		} //embed includes from a swap and embed includes golden
+		} //embed includes from a swap and embed includes /golden
 
 		if ((pokemon.includes('from a swap!","url":null')) && (legends.some(e => pokemon.includes(e)))) {
 			message.pin({ reason: 'Legendary swapped!' });
@@ -489,7 +489,7 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 	var pokembed = newMessage.embeds[0];
 	var pokemon = JSON.stringify(pokembed);	
 
-	if ((pokemon.includes('shiny')) && (pokemon.includes('fished'))) {
+	if ((pokemon.includes('ani-shiny')) && (pokemon.includes('fished'))) {
 		newMessage.pin({ reason: 'Shiny fished!' });
 		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 		pokembed.addField('​​\u200b','This Pokémon was fished in: ' + `[${newMessage.channel.name}](${newMessage.url})`);
@@ -512,9 +512,9 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 				}
 			} 
 		}
-	} //embed includes shiny and embed includes fished
+	} //embed includes ani-shiny and embed includes fished
 
-	if ((pokemon.includes('golden')) && (pokemon.includes('fished'))) {
+	if ((pokemon.includes('/golden')) && (pokemon.includes('fished'))) {
 		newMessage.pin({ reason: 'Golden fished!' });
 		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 		pokembed.addField('​​\u200b','This Pokémon was fished in: ' + `[${newMessage.channel.name}](${newMessage.url})`);
@@ -537,7 +537,7 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 				}
 			} 
 		}
-	} //embed includes golden and embed includes fished
+	} //embed includes /golden and embed includes fished
 
 	if ((legends.some(e => pokemon.includes(e))) && (pokemon.includes('fished'))) {
 		newMessage.pin({ reason: 'Legendary fished!' });
