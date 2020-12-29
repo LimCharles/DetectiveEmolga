@@ -304,7 +304,6 @@ client.on('message', (message) => {
 		} //embed includes hatched an egg and the embed includes ani-shiny
 
 		if ((pokemon.includes('hatched an Egg!')) && (eggexcl.some(e => pokemon.includes(e)))) {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			pokembed.addField('​​\u200b','This Pokémon was hatched in: ' + `[${message.channel.name}](${message.url})`);
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][0]) {
@@ -322,7 +321,6 @@ client.on('message', (message) => {
 		} //embed includes hatched an egg and embed includes an egg exlusive name
 
 		if ((pokemon.includes('hatched an Egg!')) && (legends.some(e => pokemon.includes(e)))) {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			pokembed.addField('​​\u200b','This Pokémon was hatched in: ' + `[${message.channel.name}](${message.url})`);
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][0]) {
