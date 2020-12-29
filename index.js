@@ -46,7 +46,7 @@ const legends = [
 	'/moltres.',
 	'/raikou.',
 	'/entei.',
-	'/suicine.',
+	'/suicune.',
 	'/regirock.',
 	'/regice.',
 	'/registeel.',
