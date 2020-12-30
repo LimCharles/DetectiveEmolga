@@ -228,7 +228,7 @@ client.on('message', (message) => {
 	}
 
 	var pokembed = message.embeds[0];
-
+	
 	if (typeof pokembed != 'undefined') {
 		var pokemon = JSON.stringify(pokembed);	
 		if (pokemon.includes('"footer":{"text":"Legendary (')) {
@@ -509,14 +509,19 @@ client.on('message', (message) => {
 				} 
 			}
 		} //embed includes vote message and embed has a legendary name
-	} 
+	}
 });
 
 client.on('messageUpdate', (oldMessage, newMessage) => {
 	if (oldMessage.author.id != '664508672713424926') {return;}
+	if (oldMessage == undefined) {return;}
 	if (oldMessage.embeds[0] == undefined) {return;}
 	if (oldMessage.embeds[0].author == undefined) {return;}
 	if (oldMessage.embeds[0].author.name == undefined) {return;}
+	if (newMessage == undefined ) {return;}
+	if (newMessage.embeds[0] == undefined) {return;}
+	if (newMessage.embeds[0].author == undefined) {return;}
+	if (newMessage.embeds[0].author.name == undefined) {return;}
     if ((oldMessage.embeds[0].author.name == newMessage.embeds[0].author.name) || (!(newMessage.embeds[0].author.name.includes('wild')))) {
 		return;
 	}
