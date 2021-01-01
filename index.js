@@ -134,7 +134,26 @@ const legends = [
 	'/melmetal.',
 	'/zarude.'
 ];
-
+/*
+const perms = [
+	'CREATE_INSTANT_INVITE',
+	'MANAGE_CHANNELS',      
+	'ADD_REACTIONS',        
+	'STREAM',
+	'VIEW_CHANNEL',
+	'SEND_MESSAGES',        
+	'MANAGE_MESSAGES',      
+	'EMBED_LINKS',
+	'ATTACH_FILES',
+	'READ_MESSAGE_HISTORY',
+	'MENTION_EVERYONE',
+	'USE_EXTERNAL_EMOJIS',
+	'CONNECT',
+	'SPEAK',
+	'USE_VAD',
+	'CHANGE_NICKNAME'
+];
+*/
 mongo.connect( async () => {
     collection = mongo.db("ServerData").collection("SavedChannels");
     var dd = await collection.find().toArray();
@@ -228,11 +247,18 @@ client.on('message', (message) => {
 	}
 
 	var pokembed = message.embeds[0];
-	
+
 	if (typeof pokembed != 'undefined') {
 		var pokemon = JSON.stringify(pokembed);	
+/*
+		if (!(perms.every(e => (message.guild.me.permissions.toArray().includes(e))))) {
+			console.log(message.guild.name);
+			return;
+		}
+*/
 		if (pokemon.includes('"footer":{"text":"Legendary (')) {
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+			pokembed.footer = "";
 			pokembed.addField('​​\u200b','This Pokémon was found in: ' + `[${message.channel.name}](${message.url})`);
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][0]) {
@@ -257,6 +283,7 @@ client.on('message', (message) => {
 
 		if (pokemon.includes('"footer":{"text":"Shiny (')) {
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+			pokembed.footer = "";
 			pokembed.addField('​​\u200b','This Pokémon was found in: ' + `[${message.channel.name}](${message.url})`);
 			for (let i = 0; i < channels.length; i++) {
 				if (message.guild.name == channels[i][0]) {
