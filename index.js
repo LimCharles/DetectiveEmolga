@@ -558,6 +558,7 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 
 	if ((pokemon.includes('ani-shiny')) && (pokemon.includes('fished'))) {
 		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+		pokembed.footer = "";
 		pokembed.addField('​​\u200b','This Pokémon was fished in: ' + `[${newMessage.channel.name}](${newMessage.url})`);
 		for (let i = 0; i < channels.length; i++) {
 			if (newMessage.guild.name == channels[i][0]) {
@@ -582,6 +583,7 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 
 	if ((pokemon.includes('/golden')) && (pokemon.includes('fished'))) {
 		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+		pokembed.footer = "";
 		pokembed.addField('​​\u200b','This Pokémon was fished in: ' + `[${newMessage.channel.name}](${newMessage.url})`);
 		for (let i = 0; i < channels.length; i++) {
 			if (newMessage.guild.name == channels[i][0]) {
@@ -606,6 +608,7 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 
 	if ((legends.some(e => pokemon.includes(e))) && (pokemon.includes('fished'))) {
 		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+		pokembed.footer = "";
 		pokembed.addField('​​\u200b','This Pokémon was fished in: ' + `[${newMessage.channel.name}](${newMessage.url})`);
 		for (let i = 0; i < channels.length; i++) {
 			if (newMessage.guild.name == channels[i][0]) {
