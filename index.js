@@ -139,7 +139,6 @@ const perms = [
 	'VIEW_CHANNEL',
 	'SEND_MESSAGES',            
 	'EMBED_LINKS',
-	'READ_MESSAGE_HISTORY',
 ];
 
 mongo.connect( async () => {
@@ -246,7 +245,6 @@ client.on('message', (message) => {
 		var pokemon = JSON.stringify(pokembed);	
 
 		if (!(perms.every(e => (message.guild.me.permissions.toArray().includes(e))))) {
-			console.log(message.guild.name);
 			return;
 		}
 
