@@ -135,23 +135,11 @@ const legends = [
 	'/zarude.'
 ];
 
-const perms = [
-	'CREATE_INSTANT_INVITE',
-	'MANAGE_CHANNELS',      
-	'ADD_REACTIONS',        
-	'STREAM',
+const perms = [           
 	'VIEW_CHANNEL',
-	'SEND_MESSAGES',        
-	'MANAGE_MESSAGES',      
+	'SEND_MESSAGES',            
 	'EMBED_LINKS',
-	'ATTACH_FILES',
 	'READ_MESSAGE_HISTORY',
-	'MENTION_EVERYONE',
-	'USE_EXTERNAL_EMOJIS',
-	'CONNECT',
-	'SPEAK',
-	'USE_VAD',
-	'CHANGE_NICKNAME'
 ];
 
 mongo.connect( async () => {
