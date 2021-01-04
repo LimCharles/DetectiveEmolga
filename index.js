@@ -134,7 +134,7 @@ const legends = [
 	'/melmetal.',
 	'/zarude.'
 ];
-/*
+
 const perms = [
 	'CREATE_INSTANT_INVITE',
 	'MANAGE_CHANNELS',      
@@ -153,7 +153,7 @@ const perms = [
 	'USE_VAD',
 	'CHANGE_NICKNAME'
 ];
-*/
+
 mongo.connect( async () => {
     collection = mongo.db("ServerData").collection("SavedChannels");
     var dd = await collection.find().toArray();
@@ -176,6 +176,12 @@ setInterval( async () => {
 }, 3600000);
 
 client.on('message', (message) => {
+
+	if (message.content == '!invite') {
+		message.channel.send('https://discord.com/api/oauth2/authorize?client_id=778585732318756874&permissions=206864&scope=bot');
+		return;
+	}
+
 	if (message.content == '!channel') {
 		var giveawaychannel = message.channel;
 		var giveawayserver = message.guild;
@@ -250,12 +256,12 @@ client.on('message', (message) => {
 
 	if (typeof pokembed != 'undefined') {
 		var pokemon = JSON.stringify(pokembed);	
-/*
+
 		if (!(perms.every(e => (message.guild.me.permissions.toArray().includes(e))))) {
 			console.log(message.guild.name);
 			return;
 		}
-*/
+
 		if (pokemon.includes('"footer":{"text":"Legendary (')) {
 			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
 			pokembed.footer = "";
