@@ -161,6 +161,7 @@ client.on('message', (message) => {
 		'/zarude.'
 	];
 
+	if (channels.length == 0)
 	if (message.guild.name == null) { return; }
 	var mainserver = channels.get(message.guild.name);
 
@@ -459,7 +460,7 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 
 	function formatembed(pokembed) {
 		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-		pokembed.addField('​​\u200b','Link to Original Message: ' + `[${message.channel.name}](${message.url})`);
+		pokembed.addField('​​\u200b','Link to Original Message: ' + `[${newMessage.channel.name}](${newMessage.url})`);
 		pokembed.footer = "";
 		return pokembed;
 	}
