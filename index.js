@@ -7,526 +7,308 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const mongo = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 
-var mainchannel;
-var collection;
-const channels = [];
-const filter = ({ServerName, ChannelName, LegendaryRole, ShinyRole}) => ({ServerName, ChannelName, LegendaryRole, ShinyRole});
-
-const eggexcl = [
-	'/chingling.',
-	'/bonsly.',
-	'/mimejr.',
-	'/happiny.',
-	'/chatot.',
-	'/munchlax.',
-	'/riolu.',
-	'/mantyke.',
-	'/audino.',
-	'/zorua.',
-	'/emolga.',
-	'/ferroseed.',
-	'/golett.',
-	'/pawniard.',
-	'/larvesta.',
-	'/pancham.',
-	'/spritzee.',
-	'/swirlix.',
-	'/skrelp.',
-	'/noibat.',
-	'/rockruff.',
-	'/mareanie.',
-	'/wimpod.',
-	'/carbink.',
-	'/mimikyu.'
-];
-
-const legends = [
-	'/articuno.',
-	'/zapdos.',
-	'/moltres.',
-	'/raikou.',
-	'/entei.',
-	'/suicune.',
-	'/regirock.',
-	'/regice.',
-	'/registeel.',
-	'/latias.',
-	'/latios.',
-	'/uxie.',
-	'/mesprit.',
-	'/azelf.',
-	'/heatran.',
-	'/regigigas.',
-	'/cresselia.',
-	'/cobalion.',
-	'/terrakion.',
-	'/virizion.',
-	'/tornadus.',
-	'/thundurus.',
-	'/landorus.',
-	'/typenull.',
-	'/silvally.',
-	'/tapukoko.',
-	'/tapulele.',
-	'/tapubulu.',
-	'/tapufini.',
-	'/nihilego.',
-	'/buzzwole.',
-	'/pheromosa.',
-	'/xurkitree.',
-	'/celesteela.',
-	'/kartana.',
-	'/guzzlord.',
-	'/poipole.',
-	'/naganadel.',
-	'/stakataka.',
-	'/blacephalon.',
-	'/kubfu.',
-	'/urshifu.',
-	'/regieleki.',
-	'/regidrago.',
-	'/glastrier.',
-	'/spectrier.',
-	'/mewtwo.',
-	'/lugia.',
-	'/hooh.',
-	'/kyogre.',
-	'/groudon.',
-	'/rayquaza.',
-	'/dialga.',
-	'/palkia.',
-	'/giratina.',
-	'/reshiram.',
-	'/zekrom.',
-	'/kyurem.',
-	'/xerneas.',
-	'/yveltal.',
-	'/zygarde.',
-	'/cosmog.',
-	'/cosmoem.',
-	'/solgaleo.',
-	'/lunala.',
-	'/necrozma.',
-	'/zacian.',
-	'/zamazenta.',
-	'/eternatus.',
-	'/calyrex.',
-	'/mew.',
-	'/celebi.',
-	'/jirachi.',
-	'/deoxys.',
-	'/phione.',
-	'/manaphy.',
-	'/darkrai.',
-	'/shaymin.',
-	'/arceus.',
-	'/victini.',
-	'/keldeo.',
-	'/meloetta.',
-	'/genesect.',
-	'/diancie.',
-	'/hoopa.',
-	'/volcanion.',
-	'/magearna.',
-	'/marshadow.',
-	'/zeraora.',
-	'/meltan.',
-	'/melmetal.',
-	'/zarude.'
-];
-
-const perms = [           
-	'VIEW_CHANNEL',
-	'SEND_MESSAGES',            
-	'EMBED_LINKS',
-];
+var channels = new Map();
 
 mongo.connect( async () => {
-    collection = mongo.db("ServerData").collection("SavedChannels");
-    var dd = await collection.find().toArray();
+    var collection = mongo.db("ServerData").collection("SavedChannels");
+	var dd = await collection.find().toArray();
     for (let i = 0; i < dd.length; i++ ) {
-        channels.push(Object.values(filter(dd[i])));
+        channels.set(dd[i].ServerName, {ChannelName:dd[i].ChannelName,LegendaryRole:dd[i].LegendaryRole,ShinyRole:dd[i].ShinyRole});
 	}
+	setInterval( async () => {
+		function mapToObj(inputMap) {
+			let array = [];
+			
+			inputMap.forEach((value, key) => {
+				array.push({
+				ServerName: key,
+				ChannelName: value.ChannelName,
+				LegendaryRole: value.LegendaryRole,
+				ShinyRole: value.ShinyRole
+				});
+			});
+		
+			return array;
+		}
+	
+		await collection.deleteMany(({}));
+		await collection.insertMany(mapToObj(channels));
+		console.log('Updated collection!');
+	}, 3600000);
 });
 
-setInterval( async () => {
-	datatobepassed = channels.map(x => {
-		return {    
-			ServerName: x[0],
-			ChannelName: x[1],
-			LegendaryRole: x[2],
-			ShinyRole: x[3]
-		}
-	})
-	await collection.deleteMany(({}));
-	await collection.insertMany(datatobepassed);
-}, 3600000);
-
 client.on('message', (message) => {
+	const eggexcl = [
+		'/chingling.',
+		'/bonsly.',
+		'/mimejr.',
+		'/happiny.',
+		'/chatot.',
+		'/munchlax.',
+		'/riolu.',
+		'/mantyke.',
+		'/audino.',
+		'/zorua.',
+		'/emolga.',
+		'/ferroseed.',
+		'/golett.',
+		'/pawniard.',
+		'/larvesta.',
+		'/pancham.',
+		'/spritzee.',
+		'/swirlix.',
+		'/skrelp.',
+		'/noibat.',
+		'/rockruff.',
+		'/mareanie.',
+		'/wimpod.',
+		'/carbink.',
+		'/mimikyu.'
+	];
+	
+	const legends = [
+		'/articuno.',
+		'/zapdos.',
+		'/moltres.',
+		'/raikou.',
+		'/entei.',
+		'/suicune.',
+		'/regirock.',
+		'/regice.',
+		'/registeel.',
+		'/latias.',
+		'/latios.',
+		'/uxie.',
+		'/mesprit.',
+		'/azelf.',
+		'/heatran.',
+		'/regigigas.',
+		'/cresselia.',
+		'/cobalion.',
+		'/terrakion.',
+		'/virizion.',
+		'/tornadus.',
+		'/thundurus.',
+		'/landorus.',
+		'/typenull.',
+		'/silvally.',
+		'/tapukoko.',
+		'/tapulele.',
+		'/tapubulu.',
+		'/tapufini.',
+		'/nihilego.',
+		'/buzzwole.',
+		'/pheromosa.',
+		'/xurkitree.',
+		'/celesteela.',
+		'/kartana.',
+		'/guzzlord.',
+		'/poipole.',
+		'/naganadel.',
+		'/stakataka.',
+		'/blacephalon.',
+		'/kubfu.',
+		'/urshifu.',
+		'/regieleki.',
+		'/regidrago.',
+		'/glastrier.',
+		'/spectrier.',
+		'/mewtwo.',
+		'/lugia.',
+		'/hooh.',
+		'/kyogre.',
+		'/groudon.',
+		'/rayquaza.',
+		'/dialga.',
+		'/palkia.',
+		'/giratina.',
+		'/reshiram.',
+		'/zekrom.',
+		'/kyurem.',
+		'/xerneas.',
+		'/yveltal.',
+		'/zygarde.',
+		'/cosmog.',
+		'/cosmoem.',
+		'/solgaleo.',
+		'/lunala.',
+		'/necrozma.',
+		'/zacian.',
+		'/zamazenta.',
+		'/eternatus.',
+		'/calyrex.',
+		'/mew.',
+		'/celebi.',
+		'/jirachi.',
+		'/deoxys.',
+		'/phione.',
+		'/manaphy.',
+		'/darkrai.',
+		'/shaymin.',
+		'/arceus.',
+		'/victini.',
+		'/keldeo.',
+		'/meloetta.',
+		'/genesect.',
+		'/diancie.',
+		'/hoopa.',
+		'/volcanion.',
+		'/magearna.',
+		'/marshadow.',
+		'/zeraora.',
+		'/meltan.',
+		'/melmetal.',
+		'/zarude.'
+	];
 
-	if (message.content == '!invite') {
-		message.channel.send('https://discord.com/api/oauth2/authorize?client_id=778585732318756874&permissions=206864&scope=bot');
-		return;
-	}
+	var mainserver = channels.get(message.guild.name);
 
 	if (message.content == '!channel') {
-		var giveawaychannel = message.channel;
-		var giveawayserver = message.guild;
-		for (let i = 0; i < channels.length; i++) {
-			if (channels[i][0] == giveawayserver.name) {
-				channels[i][1] = giveawaychannel.name;
-				giveawaychannel.send('This is now the rare-drops channel!');
-				return; // exit and reply with message that rare-drop channel changed
-			} 
-		} //checks if server already has a rare-drops channel, then declares the new rare-drops channel
-		channels.push([giveawayserver.name,giveawaychannel.name,null,null]); //declares new channel for that server
-		giveawaychannel.send('This is now the rare-drops channel!');
-		return; // exit and reply with message that rare-drop channel is declared
-	} // working as intended! A/O 18/11/2020
+		if (mainserver == undefined) {
+			channels.get(message.guild.name).ChannelName = message.channel.name;
+			message.channel.send('This is now the rare-drops channel!');
+			return;
+		} else {
+			channels.set(message.guild.name, {ChannelName:message.channel.name,LegendaryRole:null,ShinyRole:null});
+			message.channel.send('This is now the rare-drops channel!');
+			return;
+		}
+	} //check if guild name exists, if not, add it to channels. If it does exist, change channel name
 
 	if (message.content.startsWith('!mention')) {
-		const args = message.content.trim().split(' ');
-		for (let i = 0; i < channels.length; i++) {
-			if (message.guild.name == channels[i][0]) {
-				switch(args[1]) {
-					case 'al':
-						channels[i][2] = args[2];
-						message.channel.send(channels[i][2] + ' will now be pinged for legendaries.');
-						return;
-					case 'as':
-						channels[i][3] = args[2];
-						message.channel.send(channels[i][3] + ' will now be pinged for shinies.');
-						return;
-					case 'rl':
-						message.channel.send(channels[i][2] + ' will no longer be pinged for legendaries.');
-						delete channels[i][2]
-						return;
-					case 'rs':
-						message.channel.send(channels[i][3] + ' will no longer be pinged for shinies.');
-						delete channels[i][3]
-						return;
-					case 'check':
-						if (channels[i][2] != null) {
-							message.channel.send(channels[i][2] + ' is the role for legendaries.');
-						} else {
-							message.channel.send('There is no role for legendary drops.')
-						}
-						if (channels[i][3] != null) {
-							message.channel.send(channels[i][3] + ' is the role for shinies.');
-						} else {
-							message.channel.send('There is no role for shiny drops.')
-						}
-						return;
-					default:
-						message.channel.send('Invalid format, please try again!');
-						return;
-				}
-			} 
+		let args = message.content.trim().split(' ');
+		switch (args[1]) {
+			case 'al':
+				mainserver.LegendaryRole = args[2];
+				message.channel.send(`${mainserver.LegendaryRole} will now be tagged for legendary catches!`);
+				return;
+		
+			case 'as':
+				mainserver.ShinyRole = args[2];
+				message.channel.send(`${mainserver.ShinyRole} will now be tagged for shiny catches!`);
+				return;
+
+			case 'rl':
+				mainserver.LegendaryRole = null;
+				message.channel.send('Legendary role removed!');
+				return;
+
+			case 'rs':
+				mainserver.Shinyole = null;
+				message.channel.send('Shiny role removed!');
+				return;
+
+			case 'check':
+				message.channel.send(`${mainserver.LegendaryRole == null ? 'There is no legendary role!' : `${mainserver.LegendaryRole} is the role for legendary catches!`} 
+${mainserver.ShinyRole == null ? 'There is no shiny role!' : `${mainserver.LegendaryRole} is the role for shiny catches!`}`);
+				return; //template literal needs more support, can't indent without actually adding indent
+			default:
+				message.channel.send('Wrong format!');
+				return;
 		}
-		message.channel.send("You haven't set a rare-drops channel!");
-		return;
 	}
 
-	if (message.author.id != '664508672713424926') {return;} // return if message was not sent by pokemeow
-	var check = false;
-	for (let i = 0; i < channels.length; i++) {
-		if (message.guild.name == channels[i][0]) {
-			check = true;
-		} // check becomes true when it finds one match
-		if ((check == false) && i == (channels.length-1)) {
-			message.channel.send("You haven't set a rare-drops channel! Please use !channel in your rare drops channel!");
-			return;
-		} // return if rare-drops channel is not declared in that server
-	}
+	if (message.author.id != '664508672713424926') { return; } //return if not sent by PokeMeow
+
+
+	if (mainserver != undefined) { 
+		var mainchannel = message.guild.channels.cache.find(c => c.name == mainserver.ChannelName);
+		if (mainchannel == undefined) {
+			message.channel.send("I can't find your rare-spawns channel! Did you change the name? Please use !channel again!")
+			return; 
+		}
+	} else {
+		message.channel.send("You haven't set a rare-drops channel! Please use !channel in your rare drops channel!");
+		return;
+	}   //check if guild name exists and if it doesn't, check if channel name exists in guild
 
 	var pokembed = message.embeds[0];
+	var poketext = JSON.stringify(pokembed);
+	
+	function formatembed(pokembed) {
+		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+		pokembed.addField('​​\u200b','This Pokémon was swapped in: ' + `[${message.channel.name}](${message.url})`);
+		pokembed.footer = "";
+		return pokembed;
+	}
 
-	if (typeof pokembed != 'undefined') {
-		var pokemon = JSON.stringify(pokembed);	
-
-		if (!(perms.every(e => (message.guild.me.permissions.toArray().includes(e))))) {
-			return;
+	function checklegendaryrole() {
+		let legendaryrole = mainchannel.LegendaryRole;
+		if (legendaryrole == null) {
+			return "";
+		} else {
+			return legendaryrole;
 		}
+	}	
 
-		if (pokemon.includes('"footer":{"text":"Legendary (')) {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-			pokembed.footer = "";
-			pokembed.addField('​​\u200b','This Pokémon was found in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][2] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A legendary was found in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][2] + ' A legendary was found in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+	function checkshinyrole() {
+		let shinyrole = mainchannel.ShinyRole;
+		if (shinyrole == null) {
+			return "";
+		} else {
+			return shinyrole;
+		}
+	}	
+
+	if (pokembed != undefined) {
+		if (poketext.includes('"footer":{"text":"Legendary (')) {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checklegendaryrole()} A legendary was found in ${message.channel.name}!`)
 		} //normal legendary spawn
 
-		if (pokemon.includes('"footer":{"text":"Shiny (')) {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-			pokembed.footer = "";
-			pokembed.addField('​​\u200b','This Pokémon was found in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][3] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A shiny was found in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][3] + ' A shiny was found in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if (poketext.includes('"footer":{"text":"Shiny (')) {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checkshinyrole()} A shiny was found in ${message.channel.name}!`)
 		} //normal shiny spawn
 
-		if ((pokemon.includes('hatched an Egg!')) && (pokemon.includes('ani-shiny'))) {
-			pokembed.addField('​​\u200b','This Pokémon was hatched in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][3] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A shiny was hatched in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][3] + ' A shiny was hatched in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if ((poketext.includes('hatched an Egg!')) && (poketext.includes('ani-shiny'))) {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checkshinyrole()} A shiny was found in ${message.channel.name}!`);
 		} //embed includes hatched an egg and the embed includes ani-shiny
 
-		if ((pokemon.includes('hatched an Egg!')) && (eggexcl.some(e => pokemon.includes(e)))) {
-			pokembed.addField('​​\u200b','This Pokémon was hatched in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					mainchannel.send(pokembed);
-					mainchannel.send('An exclusive was hatched in ' + message.channel.name + '!');
-					return;
-				} 
-			}	
+		if ((poketext.includes('hatched an Egg!')) && (eggexcl.some(e => poketext.includes(e)))) {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`An exclusive was found in ${message.channel.name}!`);
 		} //embed includes hatched an egg and embed includes an egg exlusive name
 
-		if ((pokemon.includes('hatched an Egg!')) && (legends.some(e => pokemon.includes(e)))) {
-			pokembed.addField('​​\u200b','This Pokémon was hatched in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][2] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A legendary was hatched in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][2] + ' A legendary was hatched in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if ((poketext.includes('hatched an Egg!')) && (legends.some(e => poketext.includes(e)))) {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checklegendaryrole()} A legendary was found in ${message.channel.name}!`)
 		} //embed includes hatched an egg and embed includes a legendary name
 
-		if ((pokemon.includes('from a swap!","url":null')) && (pokemon.includes('ani-shiny'))) {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-			pokembed.addField('​​\u200b','This Pokémon was swapped in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][3] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A shiny was swapped in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][3] + ' A shiny was swapped in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if ((poketext.includes('from a swap!","url":null')) && (poketext.includes('ani-shiny'))) {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checkshinyrole()} A shiny was found in ${message.channel.name}!`);
 		} //embed includes from a swap and embed includes ani-shiny
 
-		if ((pokemon.includes('from a swap!","url":null')) && (pokemon.includes('/golden'))) {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-			pokembed.addField('​​\u200b','This Pokémon was swapped in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][3] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A golden was swapped in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][3] + ' A golden was swapped in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if ((poketext.includes('from a swap!","url":null')) && (poketext.includes('/golden'))) {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checkshinyrole()} A golden was found in ${message.channel.name}!`);
 		} //embed includes from a swap and embed includes /golden
 
-		if ((pokemon.includes('from a swap!","url":null')) && (legends.some(e => pokemon.includes(e)))) {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-			pokembed.addField('​​\u200b','This Pokémon was swapped in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][2] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A legendary was swapped in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][2] + ' A legendary was swapped in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if ((poketext.includes('from a swap!","url":null')) && (legends.some(e => poketext.includes(e)))) {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checklegendaryrole()} A legendary was found in ${message.channel.name}!`)
 		} //embed includes from a swap and embed has a legendary name
 
-		if ((pokemon.includes('<:Legendary:667123969245184022>')) && (pokemon.includes('catchbot returned with')))  {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-			pokembed.addField('​​\u200b','This Pokémon was CBed in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][2] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A legendary was CBed in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][2] + ' A legendary was CBed in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if ((poketext.includes('<:Legendary:667123969245184022>')) && (poketext.includes('catchbot returned with')))  {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checklegendaryrole()} A legendary was found in ${message.channel.name}!`)
 		} //embed includes legendary emote and catchbot returned with
 
-		if ((pokemon.includes('<:Shiny:667126233217105931>')) && (pokemon.includes('catchbot returned with')))  {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-			pokembed.addField('​​\u200b','This Pokémon was CBed in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][3] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A shiny was CBed in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][3] + ' A shiny was CBed in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if ((poketext.includes('<:Shiny:667126233217105931>')) && (poketext.includes('catchbot returned with')))  {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checkshinyrole()} A shiny was found in ${message.channel.name}!`);
 		} //embed includes shiny emote and catchbot returned with
 
-		if ((pokemon.includes('Type ;vote to get more boxes!')) && (pokemon.includes('ani-shiny')))  {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-			pokembed.addField('​​\u200b','This Pokémon was unboxed in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][3] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A shiny was unboxed in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][3] + ' A shiny was unboxed in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if ((poketext.includes('Type ;vote to get more boxes!')) && (poketext.includes('ani-shiny')))  {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checkshinyrole()} A shiny was found in ${message.channel.name}!`);
 		} //embed includes vote message and ani-shiny
 
-		if ((pokemon.includes('Type ;vote to get more boxes!')) && (legends.some(e => pokemon.includes(e)))) {
-			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-			pokembed.addField('​​\u200b','This Pokémon was unboxed in: ' + `[${message.channel.name}](${message.url})`);
-			for (let i = 0; i < channels.length; i++) {
-				if (message.guild.name == channels[i][0]) {
-					mainchannel = message.guild.channels.cache.find(c => c.name == channels[i][1]);
-					if (mainchannel == undefined) {
-						console.log(channels[i][0]);
-						console.log(channels[i][1]);
-						return;
-					}
-					if (channels[i][2] == undefined) {
-						mainchannel.send(pokembed);
-						mainchannel.send('A legendary was unboxed in ' + message.channel.name + '!');
-						return;
-					} else {
-						mainchannel.send(pokembed);
-						mainchannel.send(channels[i][2] + ' A legendary was unboxed in ' + message.channel.name + '!');
-						return;
-					}
-				} 
-			}
+		if ((poketext.includes('Type ;vote to get more boxes!')) && (legends.some(e => poketext.includes(e)))) {
+			mainchannel.send(formatembed(pokembed));
+			mainchannel.send(`${checklegendaryrole()} A legendary was found in ${message.channel.name}!`)
 		} //embed includes vote message and embed has a legendary name
 	}
 });
@@ -541,85 +323,24 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 	if (newMessage.embeds[0] == undefined) {return;}
 	if (newMessage.embeds[0].author == undefined) {return;}
 	if (newMessage.embeds[0].author.name == undefined) {return;}
-    if ((oldMessage.embeds[0].author.name == newMessage.embeds[0].author.name) || (!(newMessage.embeds[0].author.name.includes('wild')))) {
-		return;
-	}
+    if ((oldMessage.embeds[0].author.name == newMessage.embeds[0].author.name) || (!(newMessage.embeds[0].author.name.includes('wild')))) { return; }
 
 	var pokembed = newMessage.embeds[0];
-	var pokemon = JSON.stringify(pokembed);	
+	var poketext = JSON.stringify(pokembed);	
 
-	if ((pokemon.includes('ani-shiny')) && (pokemon.includes('fished'))) {
-		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-		pokembed.footer = "";
-		pokembed.addField('​​\u200b','This Pokémon was fished in: ' + `[${newMessage.channel.name}](${newMessage.url})`);
-		for (let i = 0; i < channels.length; i++) {
-			if (newMessage.guild.name == channels[i][0]) {
-				if (mainchannel == undefined) {
-					console.log(channels[i][0]);
-					console.log(channels[i][1]);
-					return;
-				}
-				mainchannel = newMessage.guild.channels.cache.find(c => c.name == channels[i][1]);
-				if (channels[i][3] == undefined) {
-					mainchannel.send(pokembed);
-					mainchannel.send('A shiny was fished in ' + newMessage.channel.name + '!');
-					return;
-				} else {
-					mainchannel.send(pokembed);
-					mainchannel.send(channels[i][3] + ' A shiny was fished in ' + newMessage.channel.name + '!');
-					return;
-				}
-			} 
-		}
+	if ((poketext.includes('ani-shiny')) && (poketext.includes('fished'))) {
+		mainchannel.send(formatembed(pokembed));
+		mainchannel.send(`${checkshinyrole()} A shiny was found in ${message.channel.name}!`);
 	} //embed includes ani-shiny and embed includes fished
 
-	if ((pokemon.includes('/golden')) && (pokemon.includes('fished'))) {
-		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-		pokembed.footer = "";
-		pokembed.addField('​​\u200b','This Pokémon was fished in: ' + `[${newMessage.channel.name}](${newMessage.url})`);
-		for (let i = 0; i < channels.length; i++) {
-			if (newMessage.guild.name == channels[i][0]) {
-				mainchannel = newMessage.guild.channels.cache.find(c => c.name == channels[i][1]);
-				if (mainchannel == undefined) {
-					console.log(channels[i][0]);
-					console.log(channels[i][1]);
-					return;
-				}
-				if (channels[i][3] == undefined) {
-					mainchannel.send(pokembed);
-					mainchannel.send('A golden was fished in ' + newMessage.channel.name + '!');
-					return;
-				} else {
-					mainchannel.send(pokembed);
-					mainchannel.send(channels[i][3] + ' A golden was fished in ' + newMessage.channel.name + '!');
-					return;
-				}
-			} 
-		}
+	if ((poketext.includes('/golden')) && (poketext.includes('fished'))) {
+		mainchannel.send(formatembed(pokembed));
+		mainchannel.send(`${checkshinyrole()} A golden was found in ${message.channel.name}!`);
 	} //embed includes /golden and embed includes fished
 
-	if ((legends.some(e => pokemon.includes(e))) && (pokemon.includes('fished'))) {
-		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
-		pokembed.footer = "";
-		pokembed.addField('​​\u200b','This Pokémon was fished in: ' + `[${newMessage.channel.name}](${newMessage.url})`);
-		for (let i = 0; i < channels.length; i++) {
-			if (newMessage.guild.name == channels[i][0]) {
-				mainchannel = newMessage.guild.channels.cache.find(c => c.name == channels[i][1]);
-				if (mainchannel == undefined) {
-					console.log(channels[i][0]);
-					console.log(channels[i][1]);
-					return;
-				}
-				if (channels[i][2] == undefined) {
-					mainchannel.send(pokembed);
-					mainchannel.send('A legendary was fished in ' + newMessage.channel.name + '!');
-					return;
-				} else {
-					mainchannel.send(pokembed);
-					mainchannel.send(channels[i][2] + ' A legendary was fished in ' + newMessage.channel.name + '!');
-					return;
-				}
-			} 
-		}
+	if ((legends.some(e => poketext.includes(e))) && (poketext.includes('fished'))) {
+		mainchannel.send(formatembed(pokembed));
+		mainchannel.send(`${checklegendaryrole()} A legendary was found in ${message.channel.name}!`)
 	} //embed includes a legendary name and embed includes fished
 }); 
+
