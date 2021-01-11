@@ -447,7 +447,7 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 	var mainserver = channels.get(newMessage.guild.name);
 
 	if (mainserver != undefined) { 
-		var mainchannel = message.guild.channels.cache.find(c => c.name == mainserver.ChannelName);
+		var mainchannel = newMessage.guild.channels.cache.find(c => c.name == mainserver.ChannelName);
 		if (mainchannel == undefined) {
 			message.channel.send("I can't find your rare-spawns channel! Did you change the name? Please use !channel again!")
 			return; 
