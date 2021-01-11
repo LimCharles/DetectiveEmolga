@@ -450,11 +450,11 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 	if (mainserver != undefined) { 
 		var mainchannel = newMessage.guild.channels.cache.find(c => c.name == mainserver.ChannelName);
 		if (mainchannel == undefined) {
-			message.channel.send("I can't find your rare-spawns channel! Did you change the name? Please use !channel again!")
+			newMessage.channel.send("I can't find your rare-spawns channel! Did you change the name? Please use !channel again!")
 			return; 
 		}
 	} else {
-		message.channel.send("You haven't set a rare-drops channel! Please use !channel in your rare drops channel!");
+		newMessage.channel.send("You haven't set a rare-drops channel! Please use !channel in your rare drops channel!");
 		return;
 	}   //check if guild name exists and if it doesn't, check if channel name exists in guild
 
