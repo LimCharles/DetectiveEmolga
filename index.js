@@ -165,11 +165,11 @@ client.on('message', (message) => {
 
 	if (message.content == '!channel') {
 		if (mainserver == undefined) {
-			channels.get(message.guild.name).ChannelName = message.channel.name;
+			channels.set(message.guild.name, {ChannelName:message.channel.name,LegendaryRole:null,ShinyRole:null});
 			message.channel.send('This is now the rare-drops channel!');
 			return;
 		} else {
-			channels.set(message.guild.name, {ChannelName:message.channel.name,LegendaryRole:null,ShinyRole:null});
+			channels.get(message.guild.name).ChannelName = message.channel.name;
 			message.channel.send('This is now the rare-drops channel!');
 			return;
 		}
