@@ -227,7 +227,9 @@ ${mainserver.ShinyRole == null ? 'There is no shiny role!' : `${mainserver.Legen
 	var poketext = JSON.stringify(pokembed);
 	
 	function formatembed(pokembed) {
-		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+		if (pokembed.description != null) {
+			pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+		}
 		pokembed.addField('​​\u200b','This Pokémon was swapped in: ' + `[${message.channel.name}](${message.url})`);
 		pokembed.footer = "";
 		return pokembed;
