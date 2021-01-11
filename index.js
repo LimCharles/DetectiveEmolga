@@ -328,6 +328,126 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 	var pokembed = newMessage.embeds[0];
 	var poketext = JSON.stringify(pokembed);	
 
+	const legends = [
+		'/articuno.',
+		'/zapdos.',
+		'/moltres.',
+		'/raikou.',
+		'/entei.',
+		'/suicune.',
+		'/regirock.',
+		'/regice.',
+		'/registeel.',
+		'/latias.',
+		'/latios.',
+		'/uxie.',
+		'/mesprit.',
+		'/azelf.',
+		'/heatran.',
+		'/regigigas.',
+		'/cresselia.',
+		'/cobalion.',
+		'/terrakion.',
+		'/virizion.',
+		'/tornadus.',
+		'/thundurus.',
+		'/landorus.',
+		'/typenull.',
+		'/silvally.',
+		'/tapukoko.',
+		'/tapulele.',
+		'/tapubulu.',
+		'/tapufini.',
+		'/nihilego.',
+		'/buzzwole.',
+		'/pheromosa.',
+		'/xurkitree.',
+		'/celesteela.',
+		'/kartana.',
+		'/guzzlord.',
+		'/poipole.',
+		'/naganadel.',
+		'/stakataka.',
+		'/blacephalon.',
+		'/kubfu.',
+		'/urshifu.',
+		'/regieleki.',
+		'/regidrago.',
+		'/glastrier.',
+		'/spectrier.',
+		'/mewtwo.',
+		'/lugia.',
+		'/hooh.',
+		'/kyogre.',
+		'/groudon.',
+		'/rayquaza.',
+		'/dialga.',
+		'/palkia.',
+		'/giratina.',
+		'/reshiram.',
+		'/zekrom.',
+		'/kyurem.',
+		'/xerneas.',
+		'/yveltal.',
+		'/zygarde.',
+		'/cosmog.',
+		'/cosmoem.',
+		'/solgaleo.',
+		'/lunala.',
+		'/necrozma.',
+		'/zacian.',
+		'/zamazenta.',
+		'/eternatus.',
+		'/calyrex.',
+		'/mew.',
+		'/celebi.',
+		'/jirachi.',
+		'/deoxys.',
+		'/phione.',
+		'/manaphy.',
+		'/darkrai.',
+		'/shaymin.',
+		'/arceus.',
+		'/victini.',
+		'/keldeo.',
+		'/meloetta.',
+		'/genesect.',
+		'/diancie.',
+		'/hoopa.',
+		'/volcanion.',
+		'/magearna.',
+		'/marshadow.',
+		'/zeraora.',
+		'/meltan.',
+		'/melmetal.',
+		'/zarude.'
+	];
+
+	function formatembed(pokembed) {
+		pokembed.description = pokembed.description.replace(/<.*?>/g, ' ');
+		pokembed.addField('​​\u200b','This Pokémon was swapped in: ' + `[${message.channel.name}](${message.url})`);
+		pokembed.footer = "";
+		return pokembed;
+	}
+
+	function checklegendaryrole() {
+		let legendaryrole = mainchannel.LegendaryRole;
+		if (legendaryrole == null) {
+			return "";
+		} else {
+			return legendaryrole;
+		}
+	}	
+
+	function checkshinyrole() {
+		let shinyrole = mainchannel.ShinyRole;
+		if (shinyrole == null) {
+			return "";
+		} else {
+			return shinyrole;
+		}
+	}
+
 	if ((poketext.includes('ani-shiny')) && (poketext.includes('fished'))) {
 		mainchannel.send(formatembed(pokembed));
 		mainchannel.send(`${checkshinyrole()} A shiny was found in ${message.channel.name}!`);
