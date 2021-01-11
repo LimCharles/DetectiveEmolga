@@ -485,17 +485,17 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 
 	if ((poketext.includes('ani-shiny')) && (poketext.includes('fished'))) {
 		mainchannel.send(formatembed(pokembed));
-		mainchannel.send(`${checkshinyrole()} A shiny was fished in ${message.channel.name}!`);
+		mainchannel.send(`${checkshinyrole()} A shiny was fished in ${newMessage.channel.name}!`);
 	} //embed includes ani-shiny and embed includes fished
 
 	if ((poketext.includes('/golden')) && (poketext.includes('fished'))) {
 		mainchannel.send(formatembed(pokembed));
-		mainchannel.send(`${checkshinyrole()} A golden was fished in ${message.channel.name}!`);
+		mainchannel.send(`${checkshinyrole()} A golden was fished in ${newMessage.channel.name}!`);
 	} //embed includes /golden and embed includes fished
 
 	if ((legends.some(e => poketext.includes(e))) && (poketext.includes('fished'))) {
 		mainchannel.send(formatembed(pokembed));
-		mainchannel.send(`${checklegendaryrole()} A legendary was fished in ${message.channel.name}!`)
+		mainchannel.send(`${checklegendaryrole()} A legendary was fished in ${newMessage.channel.name}!`)
 	} //embed includes a legendary name and embed includes fished
 }); 
 
