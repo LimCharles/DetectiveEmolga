@@ -161,6 +161,7 @@ client.on('message', (message) => {
 		'/zarude.'
 	];
 
+	if (message.guild.name == null) { return; }
 	var mainserver = channels.get(message.guild.name);
 
 	if (message.content == '!channel') {
