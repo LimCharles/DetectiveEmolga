@@ -443,8 +443,8 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 		'/zarude.'
 	];
 
-	if (message.guild.name == null) { return; }
-	var mainserver = channels.get(message.guild.name);
+	if (newMessage.guild.name == null) { return; }
+	var mainserver = channels.get(newMessage.guild.name);
 
 	if (mainserver != undefined) { 
 		var mainchannel = message.guild.channels.cache.find(c => c.name == mainserver.ChannelName);
