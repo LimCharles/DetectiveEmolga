@@ -163,6 +163,7 @@ client.on('message', (message) => {
 	];
 	if (dd == undefined) { return; }
 	if (dd.length > channels.length) { return; }
+	if (message == null) { return; }
 	if (message.guild.name == null) { return; }
 	var mainserver = channels.get(message.guild.name);
 
