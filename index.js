@@ -8,10 +8,11 @@ const uri = process.env.MONGO_URL;
 const mongo = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 
 var channels = new Map();
+var dd;
 
 mongo.connect( async () => {
     var collection = mongo.db("ServerData").collection("SavedChannels");
-	var dd = await collection.find().toArray();
+	dd = await collection.find().toArray();
     for (let i = 0; i < dd.length; i++ ) {
         channels.set(dd[i].ServerName, {ChannelName:dd[i].ChannelName,LegendaryRole:dd[i].LegendaryRole,ShinyRole:dd[i].ShinyRole});
 	}
@@ -161,7 +162,7 @@ client.on('message', (message) => {
 		'/zarude.'
 	];
 
-	if (channels.length == 0)
+	if (dd.length > channels.length) { return; }
 	if (message.guild.name == null) { return; }
 	var mainserver = channels.get(message.guild.name);
 
