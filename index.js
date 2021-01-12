@@ -161,7 +161,7 @@ client.on('message', (message) => {
 		'/melmetal.',
 		'/zarude.'
 	];
-
+	if (dd == undefined) { return; }
 	if (dd.length > channels.length) { return; }
 	if (message.guild.name == null) { return; }
 	var mainserver = channels.get(message.guild.name);
