@@ -222,7 +222,7 @@ client.on('message', (message) => {
 
 			case 'check':
 				message.channel.send(`${mainserver.LegendaryRole == null ? 'There is no legendary role!' : `${mainserver.LegendaryRole} is the role for legendary catches!`} 
-${mainserver.ShinyRole == null ? 'There is no shiny role!' : `${mainserver.LegendaryRole} is the role for shiny catches!`}`);
+${mainserver.ShinyRole == null ? 'There is no shiny role!' : `${mainserver.ShinyRole} is the role for shiny catches!`}`);
 				return; //template literal needs more support, can't indent without actually adding indent
 			default:
 				message.channel.send('Wrong format!');
@@ -278,61 +278,73 @@ ${mainserver.ShinyRole == null ? 'There is no shiny role!' : `${mainserver.Legen
 		if (poketext.includes('"footer":{"text":"Legendary (')) {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checklegendaryrole()} A legendary was found in ${message.channel.name}!`)
+			return;
 		} //normal legendary spawn
 
 		if (poketext.includes('"footer":{"text":"Shiny (')) {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checkshinyrole()} A shiny was found in ${message.channel.name}!`)
+			return;
 		} //normal shiny spawn
 
 		if ((poketext.includes('hatched an Egg!')) && (poketext.includes('ani-shiny'))) {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checkshinyrole()} A shiny was hatched in ${message.channel.name}!`);
+			return;
 		} //embed includes hatched an egg and the embed includes ani-shiny
 
 		if ((poketext.includes('hatched an Egg!')) && (eggexcl.some(e => poketext.includes(e)))) {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`An exclusive was hatched in ${message.channel.name}!`);
+			return;
 		} //embed includes hatched an egg and embed includes an egg exlusive name
 
 		if ((poketext.includes('hatched an Egg!')) && (legends.some(e => poketext.includes(e)))) {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checklegendaryrole()} A legendary was hatched in ${message.channel.name}!`)
+			return;
 		} //embed includes hatched an egg and embed includes a legendary name
 
 		if ((poketext.includes('from a swap!","url":null')) && (poketext.includes('ani-shiny'))) {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checkshinyrole()} A shiny was swapped in ${message.channel.name}!`);
+			return;
 		} //embed includes from a swap and embed includes ani-shiny
 
 		if ((poketext.includes('from a swap!","url":null')) && (poketext.includes('/golden'))) {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checkshinyrole()} A golden was swapped in ${message.channel.name}!`);
+			return;
 		} //embed includes from a swap and embed includes /golden
 
 		if ((poketext.includes('from a swap!","url":null')) && (legends.some(e => poketext.includes(e)))) {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checklegendaryrole()} A legendary was swapped in ${message.channel.name}!`)
+			return;
 		} //embed includes from a swap and embed has a legendary name
 
 		if ((poketext.includes('<:Legendary:667123969245184022>')) && (poketext.includes('catchbot returned with')))  {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checklegendaryrole()} A legendary was CBed in ${message.channel.name}!`)
+			return;
 		} //embed includes legendary emote and catchbot returned with
 
 		if ((poketext.includes('<:Shiny:667126233217105931>')) && (poketext.includes('catchbot returned with')))  {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checkshinyrole()} A shiny was CBed in ${message.channel.name}!`);
+			return;
 		} //embed includes shiny emote and catchbot returned with
 
 		if ((poketext.includes('Type ;vote to get more boxes!')) && (poketext.includes('ani-shiny')))  {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checkshinyrole()} A shiny was unboxed in ${message.channel.name}!`);
+			return;
 		} //embed includes vote message and ani-shiny
 
 		if ((poketext.includes('Type ;vote to get more boxes!')) && (legends.some(e => poketext.includes(e)))) {
 			mainchannel.send(formatembed(pokembed));
 			mainchannel.send(`${checklegendaryrole()} A legendary was unboxed in ${message.channel.name}!`)
+			return;
 		} //embed includes vote message and embed has a legendary name
 	}
 });
@@ -489,16 +501,19 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 	if ((poketext.includes('ani-shiny')) && (poketext.includes('fished'))) {
 		mainchannel.send(formatembed(pokembed));
 		mainchannel.send(`${checkshinyrole()} A shiny was fished in ${newMessage.channel.name}!`);
+		return;
 	} //embed includes ani-shiny and embed includes fished
 
 	if ((poketext.includes('/golden')) && (poketext.includes('fished'))) {
 		mainchannel.send(formatembed(pokembed));
 		mainchannel.send(`${checkshinyrole()} A golden was fished in ${newMessage.channel.name}!`);
+		return;
 	} //embed includes /golden and embed includes fished
 
 	if ((legends.some(e => poketext.includes(e))) && (poketext.includes('fished'))) {
 		mainchannel.send(formatembed(pokembed));
 		mainchannel.send(`${checklegendaryrole()} A legendary was fished in ${newMessage.channel.name}!`)
+		return;
 	} //embed includes a legendary name and embed includes fished
 }); 
 
